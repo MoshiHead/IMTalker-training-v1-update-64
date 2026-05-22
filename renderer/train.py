@@ -284,7 +284,7 @@ if __name__ == "__main__":
 
     # Model Architecture Params
     parser.add_argument("--depth", type=int, default=2)
-    parser.add_argument('--latent_dim', type=int, default=32)
+    parser.add_argument('--dim_motion', type=int, default=64)
     parser.add_argument('--swin_res_threshold', type=int, default=128)
     parser.add_argument('--num_heads', type=int, default=8)
     parser.add_argument('--window_size', type=int, default=8)

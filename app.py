@@ -95,9 +95,9 @@ class AppConfig:
         self.dim_a = 512
         self.dim_h = 512
         self.dim_e = 7
-        self.dim_motion = 32
+        self.dim_motion = 64
         self.dim_c = 32
-        self.dim_w = 32
+        self.dim_w = 64
         self.fmt_depth = 8
         self.num_heads = 8
         self.mlp_ratio = 4.0

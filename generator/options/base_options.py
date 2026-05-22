@@ -37,9 +37,9 @@ class BaseOptions():
 		parser.add_argument('--dim_a', type=int, default=512, help='audio dimension')
 		parser.add_argument('--dim_h', type=int, default=512, help='hidden dimension')
 		parser.add_argument('--dim_e', type=int, default=7, help='emotion dimension')
-		parser.add_argument("--dim_motion", type=int, default=32)
+		parser.add_argument("--dim_motion", type=int, default=64)
 		parser.add_argument("--dim_c", type=int, default=32)
-		parser.add_argument('--dim_w', type=int, default=32, help='face dimension')
+		parser.add_argument('--dim_w', type=int, default=64, help='face dimension')
 
 		# option for FMT
 		parser.add_argument('--fmt_depth', default=8, type=int)

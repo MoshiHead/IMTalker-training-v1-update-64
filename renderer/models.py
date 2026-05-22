@@ -40,7 +40,7 @@ class IdentityEncoder(nn.Module):
         return features[::-1], x
 
 class MotionEncoder(nn.Module):
-    def __init__(self, initial_channels=64, output_channels=[64, 128, 256, 512, 512, 512], dm=32):
+    def __init__(self, initial_channels=64, output_channels=[64, 128, 256, 512, 512, 512], dm=64):
         super(MotionEncoder, self).__init__()
         self.conv1 = nn.Conv2d(3, initial_channels, kernel_size=3, stride=1, padding=1)
         self.activation = nn.LeakyReLU(0.2)
@@ -65,7 +65,7 @@ class MotionEncoder(nn.Module):
         return x
 
 class MotionDecoder(nn.Module):
-    def __init__(self, latent_dim=32, const_dim=32):
+    def __init__(self, latent_dim=64, const_dim=32):
         super().__init__()
         self.const = nn.Parameter(torch.randn(1, const_dim, 4, 4))
         self.style_conv_layers = nn.ModuleList([
@@ -139,7 +139,7 @@ class SynthesisNetwork(nn.Module):
         return self.final_conv(x)
 
 class IdentidyAdaptive(nn.Module):
-    def __init__(self, dim_mot=32, dim_app=512, depth=4):
+    def __init__(self, dim_mot=64, dim_app=512, depth=4):
         super().__init__()
         self.in_layer = EqualLinear(dim_app+dim_mot, dim_app)
         self.linear_layers = nn.ModuleList([EqualLinear(dim_app, dim_app) for _ in range(depth)])
@@ -162,11 +162,12 @@ class IMTRenderer(nn.Module):
         self.motion_dims = self.feature_dims
         self.spatial_dims = [256, 128, 64, 32, 16, 8]
 
+        dim_motion = getattr(args, 'dim_motion', 64)
         self.dense_feature_encoder = IdentityEncoder(output_channels=self.feature_dims)
-        self.latent_token_encoder = MotionEncoder(initial_channels=64, output_channels=[128, 256, 512, 512, 512])
-        self.latent_token_decoder = MotionDecoder()
+        self.latent_token_encoder = MotionEncoder(initial_channels=64, output_channels=[128, 256, 512, 512, 512], dm=dim_motion)
+        self.latent_token_decoder = MotionDecoder(latent_dim=dim_motion)
         self.frame_decoder = SynthesisNetwork(args, self.feature_dims, self.spatial_dims)
-        self.adapt = IdentidyAdaptive()
+        self.adapt = IdentidyAdaptive(dim_mot=dim_motion)
 
         self.imt = nn.ModuleList()
         for dim, s_dim in zip(self.feature_dims[::-1], self.spatial_dims[::-1]):

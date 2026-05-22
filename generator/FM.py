@@ -155,8 +155,8 @@ class FMGenerator(nn.Module):
 
             # Setup Previous Context
             if t == 0:
-                prev_x_t = torch.zeros(B, self.num_prev_frames, self.opt.dim_c, device=device)
-                prev_a_t = torch.zeros(B, self.num_prev_frames, self.opt.dim_w, device=device)
+                prev_x_t = torch.zeros(B, self.num_prev_frames, self.opt.dim_motion, device=device)
+                prev_a_t = torch.zeros(B, self.num_prev_frames, self.opt.dim_c, device=device)
                 prev_gaze_t = torch.zeros(B, self.num_prev_frames, gaze.shape[-1], device=device)
                 prev_pose_t = torch.zeros(B, self.num_prev_frames, pose.shape[-1], device=device)
                 prev_cam_t = torch.zeros(B, self.num_prev_frames, cam.shape[-1], device=device)
